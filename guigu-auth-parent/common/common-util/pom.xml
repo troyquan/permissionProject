@@ -8,7 +8,7 @@
     </parent>
     <artifactId>common-util</artifactId>
     <name>Archetype - common-util</name>
-    <url>http://maven.apache.org</url>
+
     <dependencies>
         <dependency>
             <groupId>com.atguigu</groupId>

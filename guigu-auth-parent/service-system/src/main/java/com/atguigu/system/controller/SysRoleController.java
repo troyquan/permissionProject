@@ -12,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.PushBuilder;
@@ -28,57 +29,63 @@ public class SysRoleController {
 
     @ApiOperation("assign user role")
     @PostMapping("doAssign")
-    public Result doAssign(@RequestBody AssignRoleVo assignRoleVo){
+    public Result doAssign(@RequestBody AssignRoleVo assignRoleVo) {
         sysRoleService.doAssign(assignRoleVo);
         return Result.ok();
 
     }
+
     @ApiOperation("get user Role data")
     @GetMapping("toAssign/{userId}")
-    public Result toAssign(@PathVariable String userId){
-        Map<String,Object> roleMap = sysRoleService.getRoleByUserId(userId);
+    public Result toAssign(@PathVariable String userId) {
+        Map<String, Object> roleMap = sysRoleService.getRoleByUserId(userId);
         return Result.ok(roleMap);
     }
 
+    @PreAuthorize("hasAuthority('bnt.sysRole.remove')")
     @ApiOperation("batchRemove")
     @DeleteMapping("batchRemove")
-    public Result batchRemove(@RequestBody List<Long> ids){
+    public Result batchRemove(@RequestBody List<Long> ids) {
         sysRoleService.removeByIds(ids);
         return Result.ok();
     }
 
+    @PreAuthorize("hasAuthority('bnt.sysRole.update')")
     @ApiOperation("update")
     @PostMapping("update")
-    public Result updateById(@RequestBody SysRole sysRole){
+    public Result updateById(@RequestBody SysRole sysRole) {
         boolean isSuccess = sysRoleService.updateById(sysRole);
         if (isSuccess) {
             return Result.ok();
-        }else{
+        } else {
             return Result.fail();
         }
 
     }
+
+    @PreAuthorize("hasAuthority('bnt.sysRole.list')")
     @ApiOperation("findById")
     @GetMapping("findById/{id}")
-    public Result findById(@PathVariable String id){
+    public Result findById(@PathVariable String id) {
         SysRole sysRoleFound = sysRoleService.getById(id);
         return Result.ok(sysRoleFound);
     }
 
 
-
+    @PreAuthorize("hasAuthority('bnt.sysRole.add')")
     @ApiOperation("add")
     @PostMapping("save")
-    public Result saveRole(@RequestBody SysRole sysRole){
+    public Result saveRole(@RequestBody SysRole sysRole) {
         boolean isSuccess = sysRoleService.save(sysRole);
         if (isSuccess) {
             return Result.ok();
-        }else{
+        } else {
             return Result.fail();
         }
     }
 
     //pagination
+    @PreAuthorize("hasAuthority('bnt.sysRole.list')")
     @ApiOperation("pagination")
     @GetMapping("{page}/{limit}")
     public Result index(
@@ -95,20 +102,22 @@ public class SysRoleController {
         return Result.ok(pageModel);
     }
 
-    @ApiOperation(value ="Logic Delete")
+    @PreAuthorize("hasAuthority('bnt.sysRole.remove')")
+    @ApiOperation(value = "Logic Delete")
     @DeleteMapping("remove/{id}")
-    public Result removeRole(@PathVariable String id){
+    public Result removeRole(@PathVariable String id) {
         //call the function to delete
         boolean isSuccess = sysRoleService.removeById(id);
-        if(isSuccess){
+        if (isSuccess) {
             return Result.ok();
-        }else{
+        } else {
             return Result.fail();
         }
     }
-    @ApiOperation(value ="find all")
+
+    @ApiOperation(value = "find all")
     @GetMapping("findAll")
-    public Result findAllRole(){
+    public Result findAllRole() {
 
 
         List<SysRole> list = sysRoleService.list();
