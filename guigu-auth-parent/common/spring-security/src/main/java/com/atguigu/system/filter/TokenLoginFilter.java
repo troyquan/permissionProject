@@ -7,6 +7,8 @@ import com.atguigu.common.utils.JwtHelper;
 import com.atguigu.common.utils.ResponseUtil;
 import com.atguigu.model.vo.LoginVo;
 import com.atguigu.system.custom.CustomUser;
+import com.atguigu.system.service.LoginLogService;
+import com.atguigu.system.utils.IpUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,13 +30,16 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private RedisTemplate redisTemplate;
 
+    private LoginLogService loginLogService;
+
     //constructor
-    public TokenLoginFilter(AuthenticationManager authenticationManager,RedisTemplate redisTemplate){
+    public TokenLoginFilter(AuthenticationManager authenticationManager,RedisTemplate redisTemplate,LoginLogService loginLogService){
         this.setAuthenticationManager(authenticationManager);
         this.setPostOnly(false);
         //set login post method and path， caseSensitive only request from /admin/system/index/login will get authentication
         this.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/admin/system/index/login","POST"));
         this.redisTemplate = redisTemplate;
+        this.loginLogService=loginLogService;
     }
 
     //get username , psw , Authentication
@@ -65,6 +70,9 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
         //create token
         String token = JwtHelper.
                 createToken(customUser.getSysUser().getId(), customUser.getSysUser().getUsername());
+        //log record
+        loginLogService.recordLoginLog(customUser.getUsername(),1, IpUtil.getIpAddress(request),"Login Successful");
+
         //save authentication data into redis
         redisTemplate.opsForValue().set(customUser.getUsername(), JSON.toJSONString(customUser.getAuthorities()));
         //return token

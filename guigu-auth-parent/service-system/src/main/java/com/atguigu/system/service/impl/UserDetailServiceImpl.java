@@ -13,8 +13,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -35,7 +33,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SysUser sysUser = sysUserService.getUserInfoByUserName(username);
         if (sysUser == null) {
-            throw new UsernameNotFoundException("Account not Fount");
+            throw new UsernameNotFoundException("Account not Found");
         }
         if (sysUser.getStatus() == 0) {
             throw new RuntimeException("Account has been suspended");

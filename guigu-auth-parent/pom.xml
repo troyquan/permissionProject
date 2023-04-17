@@ -11,6 +11,7 @@
     <module>model</module>
     <module>service-system</module>
       <module>common/spring-security</module>
+    <module>common/common-log</module>
   </modules>
 
   <parent>

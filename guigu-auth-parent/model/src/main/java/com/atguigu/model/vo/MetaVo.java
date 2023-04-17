@@ -10,12 +10,12 @@ import lombok.Data;
 public class MetaVo
 {
     /**
-     * 设置该路由在侧边栏和面包屑中展示的名字
+     * set router name
      */
     private String title;
 
     /**
-     * 设置该路由的图标，对应路径src/assets/icons/svg
+     * router icon src/assets/icons/svg
      */
     private String icon;
 

@@ -3,6 +3,7 @@ package com.atguigu.system.config;
 import com.atguigu.system.custom.CustomMd5Password;
 import com.atguigu.system.filter.TokenAuthenticationFilter;
 import com.atguigu.system.filter.TokenLoginFilter;
+import com.atguigu.system.service.LoginLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,11 +29,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     private final CustomMd5Password customMd5Password;
+
+    private LoginLogService loginLogService;
     @Autowired
-    public WebSecurityConfig(RedisTemplate redisTemplate, UserDetailsService userDetailsService, CustomMd5Password customMd5Password) {
+    public WebSecurityConfig(RedisTemplate redisTemplate,
+                             UserDetailsService userDetailsService,
+                             CustomMd5Password customMd5Password,
+                             LoginLogService loginLogService) {
         this.redisTemplate = redisTemplate;
         this.userDetailsService = userDetailsService;
         this.customMd5Password = customMd5Password;
+        this.loginLogService = loginLogService;
     }
 
     @Bean
@@ -58,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 //use token to do authentication
                 .addFilterBefore(new TokenAuthenticationFilter(redisTemplate), UsernamePasswordAuthenticationFilter.class)
-                .addFilter(new TokenLoginFilter(authenticationManager(), redisTemplate));
+                .addFilter(new TokenLoginFilter(authenticationManager(), redisTemplate,loginLogService));
 
         //禁用session
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 @Data
 public class SysLoginLogQueryVo {
 	
-	@ApiModelProperty(value = "用户账号")
+	@ApiModelProperty(value = "user account")
 	private String username;
 
 	private String createTimeBegin;

@@ -8,15 +8,15 @@ import lombok.Getter;
 
 import java.util.List;
 
-@ApiModel(description = "分配菜单")
+@ApiModel(description = "Assign Role")
 @Data
 
 public class AssignRoleVo {
 
-    @ApiModelProperty(value = "用户id")
+    @ApiModelProperty(value = "user Id")
     private String userId;
 
-    @ApiModelProperty(value = "角色id列表")
+    @ApiModelProperty(value = "user id list")
     private List<String> roleIdList;
 
 }

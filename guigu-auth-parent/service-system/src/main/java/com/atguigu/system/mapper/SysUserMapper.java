@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -14,6 +15,7 @@ import org.apache.ibatis.annotations.Param;
  * @author Yongze
  * @since 2023-04-08
  */
+@Repository
 public interface SysUserMapper extends BaseMapper<SysUser> {
     IPage<SysUser> selectPage(Page<SysUser> pagePara,@Param("vo") SysUserQueryVo sysUserQueryVo);
 }
