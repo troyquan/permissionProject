@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
     @ResponseBody//return jason
     public Result error(Exception e){
         e.printStackTrace();
-        return Result.fail().message("Global Exception Handler");
+        return Result.fail().message("Ops Something went wrong");
     }
     @ExceptionHandler(ArithmeticException.class)
     @ResponseBody

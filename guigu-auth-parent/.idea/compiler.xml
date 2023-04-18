@@ -33,6 +33,7 @@
       <module name="common-log" options="-parameters" />
       <module name="common-util" options="-parameters" />
       <module name="guigu-auth-parent" options="-parameters" />
+      <module name="missionEat-auth-parent" options="-parameters" />
       <module name="model" options="-parameters" />
       <module name="service-system" options="-parameters" />
       <module name="service-util" options="-parameters" />

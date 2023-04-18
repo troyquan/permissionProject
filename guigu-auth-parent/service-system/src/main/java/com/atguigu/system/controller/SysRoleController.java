@@ -4,6 +4,8 @@ import com.atguigu.common.result.Result;
 import com.atguigu.model.system.SysRole;
 import com.atguigu.model.vo.AssignRoleVo;
 import com.atguigu.model.vo.SysRoleQueryVo;
+import com.atguigu.system.annotation.Log;
+import com.atguigu.system.enums.BusinessType;
 import com.atguigu.system.exception.CustomizedException;
 import com.atguigu.system.service.SysRoleService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -26,7 +28,8 @@ public class SysRoleController {
     @Autowired
     public SysRoleService sysRoleService;
     //delete multiple ids[1,2,3]
-
+    @PreAuthorize("hasAuthority('bnt.sysRole.assign')")
+    @Log(title = "Role Management", businessType = BusinessType.ASSGIN)
     @ApiOperation("assign user role")
     @PostMapping("doAssign")
     public Result doAssign(@RequestBody AssignRoleVo assignRoleVo) {
@@ -42,6 +45,7 @@ public class SysRoleController {
         return Result.ok(roleMap);
     }
 
+    @Log(title = "Role Management", businessType = BusinessType.DELETE)
     @PreAuthorize("hasAuthority('bnt.sysRole.remove')")
     @ApiOperation("batchRemove")
     @DeleteMapping("batchRemove")
@@ -50,6 +54,7 @@ public class SysRoleController {
         return Result.ok();
     }
 
+    @Log(title = "Role Management", businessType = BusinessType.UPDATE)
     @PreAuthorize("hasAuthority('bnt.sysRole.update')")
     @ApiOperation("update")
     @PostMapping("update")
@@ -71,7 +76,7 @@ public class SysRoleController {
         return Result.ok(sysRoleFound);
     }
 
-
+    @Log(title = "Role Management", businessType = BusinessType.INSERT)
     @PreAuthorize("hasAuthority('bnt.sysRole.add')")
     @ApiOperation("add")
     @PostMapping("save")
@@ -89,19 +94,19 @@ public class SysRoleController {
     @ApiOperation("pagination")
     @GetMapping("{page}/{limit}")
     public Result index(
-            @ApiParam(name = "page", value = "当前页码", required = true)
+            @ApiParam(name = "page", value = "present page", required = true)
             @PathVariable Long page,
 
-            @ApiParam(name = "limit", value = "每页记录数", required = true)
+            @ApiParam(name = "limit", value = "page limit", required = true)
             @PathVariable Long limit,
 
-            @ApiParam(name = "roleQueryVo", value = "查询对象", required = false)
+            @ApiParam(name = "roleQueryVo", value = "searchObj", required = false)
             SysRoleQueryVo roleQueryVo) {
         Page<SysRole> pageParam = new Page<>(page, limit);
         IPage<SysRole> pageModel = sysRoleService.selectPage(pageParam, roleQueryVo);
         return Result.ok(pageModel);
     }
-
+    @Log(title = "Role Management", businessType = BusinessType.DELETE)
     @PreAuthorize("hasAuthority('bnt.sysRole.remove')")
     @ApiOperation(value = "Logic Delete")
     @DeleteMapping("remove/{id}")

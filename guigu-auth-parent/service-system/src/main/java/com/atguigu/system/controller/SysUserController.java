@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -31,7 +32,7 @@ public class SysUserController {
     private SysUserService sysUserService;
 
 
-
+    @PreAuthorize("hasAuthority('bnt.sysUser.status')")
     @ApiOperation("update user status")
     @GetMapping("updateStatus/{id}/{status}")
     public Result updateStatus(@PathVariable String id,
@@ -39,7 +40,7 @@ public class SysUserController {
         sysUserService.updateStatus(id,status);
         return Result.ok();
     }
-
+    @PreAuthorize("hasAuthority('bnt.sysUser.list')")
     @ApiOperation("User List")
     @GetMapping("/{page}/{limit}")
     public Result list(@PathVariable Long page,
@@ -51,7 +52,7 @@ public class SysUserController {
         IPage<SysUser> pageModel = sysUserService.selectPage(pagePara,sysUserQueryVo);
         return Result.ok(pageModel);
     }
-
+    @PreAuthorize("hasAuthority('bnt.sysUser.add')")
     @ApiOperation("add user")
     @PostMapping("save")
     public Result save(@RequestBody SysUser sysUser){
@@ -62,17 +63,17 @@ public class SysUserController {
         if (isSuccess) {
             return Result.ok();
         }else {
-            return Result.fail();
+            return Result.fail("wrong user");
         }
     }
-
+    @PreAuthorize("hasAuthority('bnt.sysRole.list')")
     @ApiOperation("get by Id")
     @GetMapping("getUser/{id}")
     public Result getUserById(@PathVariable String id){
         SysUser sysUserFound = sysUserService.getById(id);
         return Result.ok(sysUserFound);
     }
-
+    @PreAuthorize("hasAuthority('bnt.sysUser.update')")
     @ApiOperation("update user")
     @PostMapping("update")
     public Result updateById(@RequestBody SysUser sysUser){
@@ -83,7 +84,7 @@ public class SysUserController {
             return Result.fail();
         }
     }
-
+    @PreAuthorize("hasAuthority('bnt.sysUser.delete')")
     @ApiOperation("delete user")
     @DeleteMapping("remove/{id}")
     public Result remove(@PathVariable String id){

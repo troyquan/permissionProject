@@ -5,7 +5,8 @@ import com.atguigu.common.utils.JwtHelper;
 import com.atguigu.model.system.SysOperLog;
 import com.atguigu.system.annotation.Log;
 import com.atguigu.system.service.OperLogService;
-import com.atguigu.system.utils.IpUtil;
+import com.atguigu.common.utils.IpUtil;
+import com.atguigu.system.service.SysLoginLogService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -66,11 +67,9 @@ public class LogAspect {
             // set param
             getControllerMethodDescription(joinPoint, controllerLog, operLog, jsonResult);
             // save to database
-            //asyncOperLogService.saveSysLog(operLog);
+            operLogService.saveSysLog(operLog);
         } catch (Exception exp) {
-            // 记录本地异常日志
-//            log.error("==前置通知异常==");
-//            log.error("异常信息:{}", exp.getMessage());
+
             exp.printStackTrace();
         }
     }
