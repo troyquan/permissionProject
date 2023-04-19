@@ -28,8 +28,9 @@ public class SysRoleController {
     @Autowired
     public SysRoleService sysRoleService;
     //delete multiple ids[1,2,3]
-    @PreAuthorize("hasAuthority('bnt.sysRole.assign')")
+
     @Log(title = "Role Management", businessType = BusinessType.ASSGIN)
+    @PreAuthorize("hasAuthority('bnt.sysRole.assignAuth')")
     @ApiOperation("assign user role")
     @PostMapping("doAssign")
     public Result doAssign(@RequestBody AssignRoleVo assignRoleVo) {

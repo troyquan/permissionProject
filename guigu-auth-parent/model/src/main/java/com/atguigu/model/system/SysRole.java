@@ -21,5 +21,8 @@ public class SysRole extends BaseEntity {
 	@TableField("description")
 	private String description;
 
+	public void setRoleId(long l) {
+
+	}
 }
 

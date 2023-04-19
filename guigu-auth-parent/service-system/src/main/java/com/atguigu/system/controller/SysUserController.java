@@ -6,6 +6,8 @@ import com.atguigu.common.utils.MD5;
 import com.atguigu.model.system.SysUser;
 import com.atguigu.model.vo.AssignRoleVo;
 import com.atguigu.model.vo.SysUserQueryVo;
+import com.atguigu.system.annotation.Log;
+import com.atguigu.system.enums.BusinessType;
 import com.atguigu.system.service.SysUserService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -32,8 +34,9 @@ public class SysUserController {
     private SysUserService sysUserService;
 
 
-    @PreAuthorize("hasAuthority('bnt.sysUser.status')")
+
     @ApiOperation("update user status")
+    @Log(title = "User Management", businessType = BusinessType.STATUS)
     @GetMapping("updateStatus/{id}/{status}")
     public Result updateStatus(@PathVariable String id,
                                @PathVariable Integer status){
@@ -53,6 +56,7 @@ public class SysUserController {
         return Result.ok(pageModel);
     }
     @PreAuthorize("hasAuthority('bnt.sysUser.add')")
+    @Log(title = "User Management", businessType = BusinessType.INSERT)
     @ApiOperation("add user")
     @PostMapping("save")
     public Result save(@RequestBody SysUser sysUser){
@@ -74,6 +78,7 @@ public class SysUserController {
         return Result.ok(sysUserFound);
     }
     @PreAuthorize("hasAuthority('bnt.sysUser.update')")
+    @Log(title = "User Management", businessType = BusinessType.UPDATE)
     @ApiOperation("update user")
     @PostMapping("update")
     public Result updateById(@RequestBody SysUser sysUser){
@@ -85,6 +90,7 @@ public class SysUserController {
         }
     }
     @PreAuthorize("hasAuthority('bnt.sysUser.delete')")
+    @Log(title = "User Management", businessType = BusinessType.DELETE)
     @ApiOperation("delete user")
     @DeleteMapping("remove/{id}")
     public Result remove(@PathVariable String id){

@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.api.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class SysMenuController {
 
     @Autowired
     private SysMenuService sysMenuService;
-
+    @PreAuthorize("hasAuthority('bnt.sysMenu.assignRole')")
     @ApiOperation("assign role permission")
     @PostMapping("doAssign")
     public Result doAssign(@RequestBody AssignMenuVo assignMenuVo){
@@ -46,6 +47,7 @@ public class SysMenuController {
     }
 
     //menu list
+    @PreAuthorize("hasAuthority('bnt.sysMenu.list')")
     @ApiOperation("menu list")
     @GetMapping("findNodes")
     public Result findNodes(){
@@ -53,27 +55,28 @@ public class SysMenuController {
         return Result.ok(list);
     }
 
+    @PreAuthorize("hasAuthority('bnt.sysMenu.add')")
     @ApiOperation("add menu")
     @PostMapping("save")
     public Result save(@RequestBody SysMenu sysMenu){
         sysMenuService.save(sysMenu);
         return Result.ok();
     }
-
+    @PreAuthorize("hasAuthority('bnt.sysMenu.list')")
     @ApiOperation("get menu by Id")
     @GetMapping("findNodes/{id}")
     public Result findNodeById(@PathVariable String id){
         SysMenu sysMenu = sysMenuService.getById(id);
         return Result.ok(sysMenu);
     }
-
+    @PreAuthorize("hasAuthority('bnt.sysMenu.update')")
     @ApiOperation("update menu")
     @PutMapping ("update")
     public Result update(@RequestBody SysMenu sysMenu){
         sysMenuService.updateById(sysMenu);
         return Result.ok();
     }
-
+    @PreAuthorize("hasAuthority('bnt.sysMenu.delete')")
     @ApiOperation("delete menu")
     @DeleteMapping("remove/{id}")
     public Result remove(@PathVariable String id){
